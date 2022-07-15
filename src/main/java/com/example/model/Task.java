@@ -2,12 +2,14 @@ package com.example.model;
 
 import lombok.Data;
 
+import java.util.Collection;
+
 @Data
-public class Task<D, V> {
+public class Task {
 
     String description;
-    Attribute<D> definition;
-    Attribute<V> value;
+    Collection<Attribute<?>> definition;
+    Collection<Attribute<?>> value;
     boolean training;
     Type type;
 
