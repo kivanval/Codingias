@@ -4,28 +4,32 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
+@Table(name = "TASKS")
 public class Task {
 
-    @Setter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.NONE)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     protected Long id;
 
     protected String description;
 
+    @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "task")
     @ToString.Exclude
-    protected Set<Attribute> domain = new HashSet<>();
+    protected Set<Element> inputs = new HashSet<>();
 
-    protected boolean training;
+    protected boolean isTraining;
 
     @Enumerated(EnumType.STRING)
     protected Type type;
