@@ -1,0 +1,119 @@
+background {
+    width: 1920px;
+    height: 1080px;
+    left: 0;
+    top: 0;
+
+    background: rgba(7, 180, 100, 0.1);
+}
+.mainRectangle {
+    position: absolute;
+    width: 532.19px;
+    height: 764.28px;
+    left: 694px;
+    top: 158px;
+
+    background: #FFFFFF;
+    border-radius: 32px;
+}
+.title {
+    position: absolute;
+    width: 170px;
+    height: 72px;
+    left: 875px;
+    top: 270px;
+
+    font-family: 'Athiti', serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 96px;
+
+    color: #0B4654;
+}
+.titleCreateAccount {
+    position: absolute;
+    width: 243px;
+    height: 47px;
+    left: 838px;
+    top: 369px;
+
+    font-family: 'Athiti', serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 27px;
+    line-height: 43px;
+
+    color: #0B4654;
+}
+.nameField {
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 328.92px;
+    height: 41.39px;
+    left: 795px;
+    top: 434px;
+
+    border: 1.4783px solid rgba(11, 70, 84, 0.25);
+    border-radius: 5.91319px;
+}
+.nameField::-moz-placeholder {
+    font-family: 'Athiti', serif;
+}
+.lastnameField {
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 328.92px;
+    height: 41.39px;
+    left: 795.26px;
+    top: 493.09px;
+
+    border: 1.4783px solid rgba(11, 70, 84, 0.25);
+    border-radius: 5.91319px;
+}
+.lastnameField::-moz-placeholder {
+    font-family: 'Athiti', serif;
+}
+.emailField {
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 328.92px;
+    height: 41.39px;
+    left: 795.26px;
+    top: 552.22px;
+
+    border: 1.4783px solid rgba(11, 70, 84, 0.25);
+    border-radius: 5.91319px;
+}
+.emailField::-moz-placeholder {
+    font-family: 'Athiti', serif;
+}
+.password {
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 328.92px;
+    height: 41.39px;
+    left: 795.26px;
+    top: 611.36px;
+
+    border: 1.4783px solid rgba(11, 70, 84, 0.25);
+    border-radius: 5.91319px;
+}
+.password::-moz-placeholder {
+    font-family: 'Athiti', serif;
+}
+.btn-primary {
+    position: absolute;
+    width: 328.92px;
+    height: 41.39px;
+    left: 795px;
+    top: 670px;
+
+    background: #07B464;
+    box-shadow: 0 2.9566px 2.9566px rgba(0, 0, 0, 0.25), inset 0 1.4783px 2.9566px rgba(255, 255, 255, 0.25), inset 0 -1.4783px 2.9566px rgba(0, 0, 0, 0.25);
+    border-radius: 11.8264px;
+}
