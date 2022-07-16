@@ -12,7 +12,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,14 +19,15 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
-    private Role role;
+    protected Role role;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
+    protected String firstName;
+    protected String lastName;
+
+    protected String email;
+    protected String password;
 
     @Override
     public boolean equals(Object o) {
