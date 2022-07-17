@@ -37,4 +37,5 @@ public abstract class TaskSupplier implements Supplier<Collection<Task>> {
     protected Collection<Task> generateDecodingTasks() {
         return new ArrayList<>();
     }
+
 }

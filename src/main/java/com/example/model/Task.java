@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -24,11 +22,6 @@ public class Task {
 
     protected String description;
 
-    @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "task")
-    @ToString.Exclude
-    protected Set<Element> inputs = new HashSet<>();
-
     protected boolean isTraining;
 
     @Enumerated(EnumType.STRING)
@@ -36,6 +29,34 @@ public class Task {
 
     public enum Type {
         CODING, DECODING
+    }
+
+    public Task(String description, boolean isTraining, Type type) {
+        this.description = description;
+        this.isTraining = isTraining;
+        this.type = type;
+    }
+
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "task")
+    @ToString.Exclude
+    @Access(AccessType.FIELD)
+    protected Set<Element> inputs = new HashSet<>();
+
+    public Set<Element> getInputs() {
+        return Collections.unmodifiableSet(inputs);
+    }
+
+    public Task addInputElement(Element element) {
+        element.setTask(this);
+        inputs.add(element);
+        return this;
+    }
+
+    public Task removeElement(Element element) {
+        element.setTask(null);
+        inputs.remove(element);
+        return this;
     }
 
     @Override

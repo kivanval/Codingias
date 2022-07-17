@@ -14,7 +14,7 @@ import java.util.Objects;
 @Table(name = "ELEMENTS")
 public class Element {
 
-    @Setter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,7 +22,19 @@ public class Element {
 
     protected String description;
 
+    public static final String ANY_SEQUENCE = "%";
+    public static final String ANY_SYMBOL = "_";
+
     protected String field;
+
+    @Column(name = "is_input")
+    protected boolean isInput;
+
+    public Element(String description, String field, boolean isInput) {
+        this.description = description;
+        this.field = field;
+        this.isInput = isInput;
+    }
 
     @OneToOne
     @JoinColumn(name = "image_id")
@@ -31,9 +43,6 @@ public class Element {
     @ManyToOne
     @JoinColumn(name = "task_id")
     protected Task task;
-
-    @Column(name = "is_input")
-    protected boolean isInput;
 
 
     @Override
