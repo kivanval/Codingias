@@ -11,7 +11,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "ELEMENTS")
+@Table(name = "INPUT_ELEMENTS")
 public class Element {
 
     @Setter(AccessLevel.NONE)
@@ -25,32 +25,28 @@ public class Element {
     public static final String ANY_SEQUENCE = "%";
     public static final String ANY_SYMBOL = "_";
 
-    protected String field;
+    @Embedded
+    protected DataContainer inputDataContainer;
 
-    @Column(name = "is_input")
-    protected boolean isInput;
+    @Embedded
+    protected DataContainer imageDataContainer;
 
-    public Element(String description, String field, boolean isInput) {
+    public Element(String description, DataContainer inputDataContainer, DataContainer imageDataContainer) {
         this.description = description;
-        this.field = field;
-        this.isInput = isInput;
+        this.inputDataContainer = inputDataContainer;
+        this.imageDataContainer = imageDataContainer;
     }
-
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    protected Element image;
 
     @ManyToOne
     @JoinColumn(name = "task_id")
     protected Task task;
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Element element = (Element) o;
-        return id != null && Objects.equals(id, element.id);
+        Element that = (Element) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override

@@ -41,21 +41,21 @@ public class Task {
     @OneToMany(mappedBy = "task")
     @ToString.Exclude
     @Access(AccessType.FIELD)
-    protected Set<Element> inputs = new HashSet<>();
+    protected Set<Element> elements = new HashSet<>();
 
-    public Set<Element> getInputs() {
-        return Collections.unmodifiableSet(inputs);
+    public Set<Element> getElements() {
+        return Collections.unmodifiableSet(elements);
     }
 
-    public Task addInputElement(Element element) {
+    public Task addElement(Element element) {
         element.setTask(this);
-        inputs.add(element);
+        elements.add(element);
         return this;
     }
 
     public Task removeElement(Element element) {
         element.setTask(null);
-        inputs.remove(element);
+        elements.remove(element);
         return this;
     }
 
