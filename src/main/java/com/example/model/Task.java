@@ -20,8 +20,11 @@ public class Task {
     @Column(nullable = false)
     protected Long id;
 
+    @Basic
     protected String description;
 
+    @Basic
+    @Column(name = "is_training")
     protected boolean isTraining;
 
     @Enumerated(EnumType.STRING)

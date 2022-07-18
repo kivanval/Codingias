@@ -11,7 +11,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "INPUT_ELEMENTS")
+@Table(name = "ELEMENTS")
 public class Element {
 
     @Setter(AccessLevel.NONE)
@@ -20,21 +20,21 @@ public class Element {
     @Column(name = "id", nullable = false)
     protected Long id;
 
+    @Basic
     protected String description;
 
-    public static final String ANY_SEQUENCE = "%";
-    public static final String ANY_SYMBOL = "_";
+    @Embedded
+    @AttributeOverride(name = "field", column = @Column(name = "input_field"))
+    protected ElementData inputData;
 
     @Embedded
-    protected ElementData inputElementData;
+    @AttributeOverride(name = "field", column = @Column(name = "image_field"))
+    protected ElementData imageData;
 
-    @Embedded
-    protected ElementData imageElementData;
-
-    public Element(String description, ElementData inputElementData, ElementData imageElementData) {
+    public Element(String description, ElementData inputData, ElementData imageData) {
         this.description = description;
-        this.inputElementData = inputElementData;
-        this.imageElementData = imageElementData;
+        this.inputData = inputData;
+        this.imageData = imageData;
     }
 
     @ManyToOne

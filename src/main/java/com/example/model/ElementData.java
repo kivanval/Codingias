@@ -1,5 +1,6 @@
 package com.example.model;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,10 @@ import java.util.Objects;
 @Embeddable
 public class ElementData {
 
+    public static final String ANY_SEQUENCE = "%";
+    public static final String ANY_SYMBOL = "_";
+
+    @Basic
     protected String field;
 
     public ElementData(String field) {

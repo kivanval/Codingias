@@ -1,61 +1,80 @@
 package com.example.service;
 
-import com.example.model.ElementData;
+import com.example.data.TaskRepository;
 import com.example.model.Element;
+import com.example.model.ElementData;
 import com.example.model.Task;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.function.IntBinaryOperator;
 
 @Getter
-@RequiredArgsConstructor
-public final class GrayCodeSupplier extends TaskSupplier {
+@Setter
+@Slf4j
+@Service
+public class GrayCodeTaskLoader implements TaskLoader {
 
-    private final int min;
+    private TaskRepository taskRepository;
 
-    private final int max;
+    private int min;
 
-    private final double effectiveShare;
+    public static final int DEFAULT_MIN = 5;
 
-    private static final double DEFAULT_EFFECTIVE_SHARE = 0.25D;
+    private int max;
 
-    public GrayCodeSupplier(int min, int max) {
+    public static final int DEFAULT_MAX = 10;
+
+    private int frequency;
+
+    public static final int DEFAULT_FREQUENCY = 5;
+
+    @Autowired
+    public GrayCodeTaskLoader(TaskRepository taskRepository) {
+        this(taskRepository, DEFAULT_MIN, DEFAULT_MAX, DEFAULT_FREQUENCY);
+    }
+
+    public GrayCodeTaskLoader(TaskRepository taskRepository, int min, int max) {
+        this(taskRepository, min, max, DEFAULT_FREQUENCY);
+    }
+
+    public GrayCodeTaskLoader(TaskRepository taskRepository, int min, int max, int frequency) {
+        this.taskRepository = taskRepository;
         this.min = min;
         this.max = max;
-        this.effectiveShare = DEFAULT_EFFECTIVE_SHARE;
+        this.frequency = frequency;
     }
 
     @Override
-    protected ArrayList<Task> generateCodingTasks() {
-        return generateTasks(GrayCodeSupplier::grayCoding, Task.Type.CODING);
+    public void loadCodingTasks() {
+        loadTasks(GrayCodeTaskLoader::grayCoding, Task.Type.CODING);
     }
 
     @Override
-    protected ArrayList<Task> generateDecodingTasks() {
-        return generateTasks(GrayCodeSupplier::reverseGrayCoding, Task.Type.DECODING);
+    public void loadDecodingTasks() {
+        loadTasks(GrayCodeTaskLoader::reverseGrayCoding, Task.Type.DECODING);
     }
 
-    private ArrayList<Task> generateTasks(IntBinaryOperator converter, Task.Type taskType) {
-        final int initialCapacity = (2 << max + 1) - (2 << min);
-        ArrayList<Task> tasks = new ArrayList<>(initialCapacity);
+    private void loadTasks(IntBinaryOperator converter, Task.Type taskType) {
         for (int length = min; length <= max; length++) {
             int start = 1 << length;
             int startReflection = ~start;
             int end = start << 1;
-            int frequency = (int) (1 / effectiveShare);
             for (int i = start, j = 0; i < end; i++, j++, j %= frequency) {
                 int input = i & startReflection;
                 boolean isTraining = j == frequency - 1;
-                tasks.add(getTask(converter, input, length, isTraining, taskType));
+                Task task = getTask(converter, input, length, isTraining, taskType);
+                taskRepository.save(task);
+                log.info("save task {}", task);
             }
         }
-        return tasks;
     }
 
     private Task getTask(IntBinaryOperator converter, int input, int length, boolean isTraining, Task.Type taskType) {
-        ElementData inputElementData = new ElementData(Element.ANY_SEQUENCE);
+        ElementData inputElementData = new ElementData(ElementData.ANY_SEQUENCE);
         int image = converter.applyAsInt(input, length);
         ElementData imageElementData = new ElementData(inputToString(image, length));
         Element element = new Element(null, inputElementData, imageElementData);
