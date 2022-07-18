@@ -26,15 +26,15 @@ public class Element {
     public static final String ANY_SYMBOL = "_";
 
     @Embedded
-    protected DataContainer inputDataContainer;
+    protected ElementData inputElementData;
 
     @Embedded
-    protected DataContainer imageDataContainer;
+    protected ElementData imageElementData;
 
-    public Element(String description, DataContainer inputDataContainer, DataContainer imageDataContainer) {
+    public Element(String description, ElementData inputElementData, ElementData imageElementData) {
         this.description = description;
-        this.inputDataContainer = inputDataContainer;
-        this.imageDataContainer = imageDataContainer;
+        this.inputElementData = inputElementData;
+        this.imageElementData = imageElementData;
     }
 
     @ManyToOne

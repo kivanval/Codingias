@@ -1,13 +1,12 @@
 package com.example.service;
 
-import com.example.model.DataContainer;
+import com.example.model.ElementData;
 import com.example.model.Element;
 import com.example.model.Task;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.function.IntBinaryOperator;
 
 @Getter
@@ -56,10 +55,10 @@ public final class GrayCodeSupplier extends TaskSupplier {
     }
 
     private Task getTask(IntBinaryOperator converter, int input, int length, boolean isTraining, Task.Type taskType) {
-        DataContainer inputDataContainer = new DataContainer(Element.ANY_SEQUENCE);
+        ElementData inputElementData = new ElementData(Element.ANY_SEQUENCE);
         int image = converter.applyAsInt(input, length);
-        DataContainer imageDataContainer = new DataContainer(inputToString(image, length));
-        Element element = new Element(null, inputDataContainer, imageDataContainer);
+        ElementData imageElementData = new ElementData(inputToString(image, length));
+        Element element = new Element(null, inputElementData, imageElementData);
         String description = getDescriptionTask(input, length);
         return new Task(description, isTraining, taskType)
                 .addElement(element);

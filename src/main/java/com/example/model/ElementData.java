@@ -14,11 +14,11 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Embeddable
-public class DataContainer {
+public class ElementData {
 
     protected String field;
 
-    public DataContainer(String field) {
+    public ElementData(String field) {
         this.field = field;
     }
 
@@ -26,7 +26,7 @@ public class DataContainer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        DataContainer that = (DataContainer) o;
+        ElementData that = (ElementData) o;
         return field != null && Objects.equals(field, that.field);
     }
 
