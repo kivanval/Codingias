@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.security.model.User;
+import com.example.model.User;
 
 import java.io.File;
 import java.util.List;
