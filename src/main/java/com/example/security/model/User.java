@@ -14,7 +14,6 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 public class User {
     @Id
@@ -28,6 +27,13 @@ public class User {
 
     protected String email;
     protected String password;
+
+    public User(Role role, String firstName, String lastName, String email) {
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 
     @Override
     public boolean equals(Object o) {
