@@ -1,0 +1,10 @@
+<form>
+    <table>
+        <tr *ngFor="let row of data">
+            <td *ngFor="let el of row">
+                <p class="data" *ngIf="el!='?'">{{el}}</p>
+                <input *ngIf="el=='?'">
+            </td>
+        </tr>
+    </table>
+</form>

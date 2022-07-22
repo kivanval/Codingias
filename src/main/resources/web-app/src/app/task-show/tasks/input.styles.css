@@ -1,0 +1,25 @@
+input{
+    background-color: red;
+    margin: 0;
+    padding: 0;
+    width: 2em;
+    height: 2em;
+    border: 0.5px solid black;
+
+}
+.data{
+    background-color: yellow;
+    margin: 0;
+    padding: 0;
+    width: 1.5em;
+    text-align: center;
+    height: 1.5em;
+    border: 0.5px solid black;
+}
+form{
+    width: 1000px;
+    height: 300px;
+}
+body{
+    background-color: red;
+}
