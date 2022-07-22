@@ -10,6 +10,8 @@ import { StringAnswerComponent } from './task-show/tasks/answers/string-answer/s
 import { MatrixAnswerComponent } from './task-show/tasks/answers/matrix-answer/matrix-answer.component';
 import {InputDirective} from "./task-show/InputDirective";
 import {AnswerDirective} from "./task-show/AnswerDirective";
+import { ArrayInputComponent } from './array-input/array-input.component';
+import { ArrayAnswerComponent } from './task-show/tasks/answers/array-answer/array-answer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,9 @@ import {AnswerDirective} from "./task-show/AnswerDirective";
     StringAnswerComponent,
     MatrixAnswerComponent,
     InputDirective,
-    AnswerDirective
+    AnswerDirective,
+    ArrayInputComponent,
+    ArrayAnswerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,6 @@
+     <div class="array">
+        <div class="holder" *ngFor="let el of data">
+                <p class="data" *ngIf="el!='?'">{{el}}</p>
+                <input type="number" [maxLength]="1" *ngIf="el=='?'">
+            </div>
+     </div>

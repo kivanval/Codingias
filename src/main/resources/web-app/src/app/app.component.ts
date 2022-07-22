@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {getData, TaskData} from "./task-show/Test/JsonData";
+import {getData, TaskData} from "./task-show/Test/JsonDataMat-String";
 
 @Component({
   selector: 'app-root',

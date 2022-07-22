@@ -1,0 +1,11 @@
+.holder{
+    height: 1em;
+    width: 1em;
+}
+.data{
+    border: none;
+}
+.array{
+    display: flex;
+    flex-direction: row;
+}
