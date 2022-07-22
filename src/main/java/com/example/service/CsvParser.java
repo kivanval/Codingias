@@ -1,7 +1,7 @@
 package com.example.service;
 
-import com.example.security.model.Role;
-import com.example.security.model.User;
+import com.example.model.Role;
+import com.example.model.User;
 import lombok.SneakyThrows;
 
 import java.io.*;
