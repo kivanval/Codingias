@@ -1,6 +1,5 @@
 package com.example.service;
 
-import com.example.model.Role;
 import com.example.model.User;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Cell;
