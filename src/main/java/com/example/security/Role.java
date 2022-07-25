@@ -1,44 +1,50 @@
 package com.example.security;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@Data
+
+@Getter
+@Setter
+@ToString
 @RequiredArgsConstructor
+@Entity
+@Table(name = "ROLES")
 public class Role  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    protected String roleName;
+    protected String name;
 
-    @OneToMany
-    private Set<Permission> permissions;
+    @OneToMany(mappedBy = "role")
+    @ToString.Exclude
+    private Set<User> users = new HashSet<>();
 
-    public Role(String roleName, Set<Permission> permissions) {
-        this.roleName = roleName;
-        this.permissions = permissions;
+    @OneToMany(mappedBy = "role")
+    @ToString.Exclude
+    private Set<Permission> permissions = new HashSet<>();
+
+    public Role(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Role role = (Role) o;
-        return Objects.equals(id, role.id) &&
-                Objects.equals(roleName, role.roleName) &&
-                Objects.equals(permissions, role.permissions);
+        return id != null && Objects.equals(id, role.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, roleName, permissions);
+        return getClass().hashCode();
     }
 }
