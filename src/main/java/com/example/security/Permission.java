@@ -1,25 +1,37 @@
 package com.example.security;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
+
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
-@Data
-@NoArgsConstructor
+@Table(name = "PERMISSIONS")
 public class Permission implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     protected String authorityName;
+
+    @ManyToMany
+    @JoinTable(name = "USER_PERMISSIONS")
+    @ToString.Exclude
+    private Set<User> users = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public Permission(String authorityName) {
         this.authorityName = authorityName;
@@ -33,13 +45,13 @@ public class Permission implements GrantedAuthority {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Permission that = (Permission) o;
-        return Objects.equals(id, that.id) && Objects.equals(authorityName, that.authorityName);
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, authorityName);
+        return getClass().hashCode();
     }
 }
