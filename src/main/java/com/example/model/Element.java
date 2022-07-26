@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -12,11 +14,14 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "ELEMENTS")
-public class Element {
+public class Element implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Setter(AccessLevel.NONE)
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     protected Long id;
 
@@ -31,15 +36,18 @@ public class Element {
     @AttributeOverride(name = "field", column = @Column(name = "image_field"))
     protected ElementData imageData;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(
+            name = "task_id",
+            foreignKey = @ForeignKey(name = "elements_task_id_fkey")
+    )
+    protected Task task;
+
     public Element(String description, ElementData inputData, ElementData imageData) {
         this.description = description;
         this.inputData = inputData;
         this.imageData = imageData;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "task_id")
-    protected Task task;
 
     @Override
     public boolean equals(Object o) {
