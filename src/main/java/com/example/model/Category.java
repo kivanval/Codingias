@@ -6,15 +6,17 @@ import org.hibernate.Hibernate;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "ELEMENTS")
-public class Element implements Serializable {
+@Table(name = "CATEGORIES")
+public class Category implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -26,35 +28,28 @@ public class Element implements Serializable {
     protected Long id;
 
     @Basic
+    @Column(nullable = false)
+    protected String name;
+
+    @Basic
     protected String description;
 
-    @Embedded
-    @AttributeOverride(name = "field", column = @Column(name = "input_field"))
-    protected ElementData inputData;
+    @OneToMany(mappedBy = "category", orphanRemoval = true)
+    @ToString.Exclude
+    @Access(AccessType.FIELD)
+    private Set<Coding> codings = new HashSet<>();
 
-    @Embedded
-    @AttributeOverride(name = "field", column = @Column(name = "image_field"))
-    protected ElementData imageData;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(
-            name = "task_id",
-            foreignKey = @ForeignKey(name = "elements_task_id_fkey")
-    )
-    protected Task task;
-
-    public Element(String description, ElementData inputData, ElementData imageData) {
+    public Category(String name, String description) {
+        this.name = name;
         this.description = description;
-        this.inputData = inputData;
-        this.imageData = imageData;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Element that = (Element) o;
-        return id != null && Objects.equals(id, that.id);
+        Category category = (Category) o;
+        return id != null && Objects.equals(id, category.id);
     }
 
     @Override

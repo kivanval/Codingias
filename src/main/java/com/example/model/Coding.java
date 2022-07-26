@@ -6,15 +6,17 @@ import org.hibernate.Hibernate;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "ELEMENTS")
-public class Element implements Serializable {
+@Table(name = "CODINGS")
+public class Coding implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -26,35 +28,35 @@ public class Element implements Serializable {
     protected Long id;
 
     @Basic
+    @Column(nullable = false)
+    protected String name;
+
+    @Basic
     protected String description;
 
-    @Embedded
-    @AttributeOverride(name = "field", column = @Column(name = "input_field"))
-    protected ElementData inputData;
-
-    @Embedded
-    @AttributeOverride(name = "field", column = @Column(name = "image_field"))
-    protected ElementData imageData;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(
-            name = "task_id",
-            foreignKey = @ForeignKey(name = "elements_task_id_fkey")
+            name = "category_id",
+            foreignKey = @ForeignKey(name = "coding_category_id_fkey")
     )
-    protected Task task;
+    protected Category category;
 
-    public Element(String description, ElementData inputData, ElementData imageData) {
+    @OneToMany(mappedBy = "coding", orphanRemoval = true)
+    @ToString.Exclude
+    @Access(AccessType.FIELD)
+    private Set<Task> tasks = new HashSet<>();
+
+    public Coding(String name, String description) {
+        this.name = name;
         this.description = description;
-        this.inputData = inputData;
-        this.imageData = imageData;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Element that = (Element) o;
-        return id != null && Objects.equals(id, that.id);
+        Coding coding = (Coding) o;
+        return id != null && Objects.equals(id, coding.id);
     }
 
     @Override

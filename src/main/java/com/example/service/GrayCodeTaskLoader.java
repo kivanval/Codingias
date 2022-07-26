@@ -30,7 +30,7 @@ public class GrayCodeTaskLoader implements TaskLoader {
 
     private int frequency;
 
-    public static final int DEFAULT_FREQUENCY = 5;
+    public static final int DEFAULT_FREQUENCY = 10;
 
     @Autowired
     public GrayCodeTaskLoader(TaskRepository taskRepository) {
@@ -55,7 +55,7 @@ public class GrayCodeTaskLoader implements TaskLoader {
 
     @Override
     public void loadDecodingTasks() {
-        loadTasks(GrayCodeTaskLoader::reverseGrayCoding, Task.Type.DECODING);
+        loadTasks(GrayCodeTaskLoader::grayDecoding, Task.Type.DECODING);
     }
 
     private void loadTasks(IntBinaryOperator converter, Task.Type taskType) {
@@ -107,9 +107,9 @@ public class GrayCodeTaskLoader implements TaskLoader {
         return image;
     }
 
-    public static int reverseGrayCoding(int input, int length) {
-        int image = 0;
+    public static int grayDecoding(int input, int length) {
         final int startBit = (input >>> (length - 1)) & 1;
+        int image = 0;
         for (int i = 1; i <= length; i++) {
             int value = startBit;
             for (int j = 1; j < i; j++) {

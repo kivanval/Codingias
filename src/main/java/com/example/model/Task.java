@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 @Getter
@@ -12,9 +14,13 @@ import java.util.*;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "TASKS")
-public class Task {
+public class Task implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Setter(AccessLevel.NONE)
+    @Basic
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -27,11 +33,25 @@ public class Task {
     @Column(name = "is_training")
     protected boolean isTraining;
 
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @ToString.Exclude
+    @Access(AccessType.FIELD)
+    protected transient Set<Element> elements = new HashSet<>();
+
     @Enumerated(EnumType.STRING)
     protected Type type;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "coding_id",
+            foreignKey= @ForeignKey(name = "tasks_coding_id_fkey")
+    )
+    protected Coding coding;
+
     public enum Type {
         CODING, DECODING
+
     }
 
     public Task(String description, boolean isTraining, Type type) {
@@ -39,12 +59,6 @@ public class Task {
         this.isTraining = isTraining;
         this.type = type;
     }
-
-    @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "task")
-    @ToString.Exclude
-    @Access(AccessType.FIELD)
-    protected Set<Element> elements = new HashSet<>();
 
     public Set<Element> getElements() {
         return Collections.unmodifiableSet(elements);
