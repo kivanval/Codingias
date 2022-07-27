@@ -1,0 +1,27 @@
+<br>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col" >Прізвище</th>
+        <th scope="col">Ім'я</th>
+        <th scope="col">Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let student of studentList; let i = index">
+        <th>{{i+1}}</th>
+        <td><input class="" (change)="redactStudent(i, 'surname',
+         getInputValue('surname'+i))" [id]="'surname'+i"    value="{{student.surname}}"></td>
+        <td><input class="" (change)="redactStudent(i, 'name',
+         getInputValue('name'+i))" [id]="'name'+i"    value="{{student.name}}"></td>
+        <td><input class="" (change)="redactStudent(i, 'email',
+         getInputValue('email'+i))" [id]="'email'+i"    value="{{student.email}}"></td>
+
+        <td>
+        <button class="btn btn-outline-danger" (click)="deleteStudent(i)">Видалити</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>

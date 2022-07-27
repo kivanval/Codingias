@@ -1,0 +1,62 @@
+.btn{
+    width: 30%;
+    margin-top: 2%;
+    background: #07B464;
+    box-shadow: 0 2.9566px 2.9566px rgba(0, 0, 0, 0.25), inset 0 1.4783px 2.9566px rgba(255, 255, 255, 0.25), inset 0 -1.4783px 2.9566px rgba(0, 0, 0, 0.25);
+    border-radius: 11.8264px;
+    border: none;
+}
+.admin-register-form-component{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.group-info-form{
+    margin: 3% 0;
+}
+.group-info-form>*{
+    width: 100%;
+    margin: 1% 1%;
+}
+input{
+    border: 1.4783px solid rgba(11, 70, 84, 0.25);
+    border-radius: 5.91319px;
+}
+.add-student-form{
+    padding: 20px 0px;
+    border: 1px dotted black;
+    border-radius: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1%;
+}
+.add-student-form>input{
+    margin: 0 10px;
+}
+
+.btns{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+.btns>*{
+    margin: 0 1%;
+    height: 10%;
+    width: 25%;
+}
+
+@media screen and (max-width: 600px) {
+    .add-student-form{
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn{
+        white-space: nowrap;
+        width: auto;
+        padding-left: 1%;
+        padding-right: 1%;
+    }
+
+}

@@ -1,0 +1,12 @@
+.content{
+    width:80%;
+    background-color: white;
+    border-radius: 32px;
+}
+.body{
+    padding-top: 1%;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}

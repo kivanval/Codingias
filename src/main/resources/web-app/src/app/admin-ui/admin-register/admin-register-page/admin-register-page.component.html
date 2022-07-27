@@ -1,0 +1,3 @@
+<h3 style="margin-top: 2%" class="text-sm-center">Створення групи</h3>
+<app-admin-register-form (onNewStudent)="addStudent($event)" (onNewStudents)="addStudents($event)"  ></app-admin-register-form>
+<app-admin-register-list (onRedactStudent)="redactStudent($event)" (onDeleteStudent)="deleteStudent($event)"  [studentList]="students" ></app-admin-register-list>

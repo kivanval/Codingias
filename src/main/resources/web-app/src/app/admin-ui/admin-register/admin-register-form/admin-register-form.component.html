@@ -1,0 +1,23 @@
+<div class="admin-register-form-component">
+    <!--    <input required type="file" #exelFile>-->
+    <input style="margin-top: 2%"  placeholder="Назва групи"  >
+
+    <p style="margin-top: 4%; font-size:140%">Додати учня</p>
+
+
+    <form class="add-student-form">
+        <input type="text" #surname placeholder="Прізвище">
+        <input type="text" #name placeholder="Ім'я">
+        <input type="text" #email placeholder="Електронна пошта">
+        <button type="button" class="btn  btn-primary"
+                (click)="addStudent({name:name.value, surname:surname.value, email:email.value})" >Додати</button>
+    </form>
+    <div class="btns">
+    <button type="button" class="btn  btn-primary" (click)="importData()" >Завантажити Excel</button>
+
+    <button type="button" class="btn btn-primary" style="margin-bottom:3% ">Створити групу</button>
+    </div>
+    <p class="h3">ІА-12</p>
+
+
+</div>
