@@ -1,6 +1,7 @@
 package com.example.service;
 
-import com.example.data.TaskRepository;
+import com.example.data.JpaTaskRepository;
+import com.example.model.Coding;
 import com.example.model.Element;
 import com.example.model.ElementData;
 import com.example.model.Task;
@@ -16,33 +17,29 @@ import java.util.function.IntBinaryOperator;
 @Setter
 @Slf4j
 @Service
-public class GrayCodeTaskLoader implements TaskLoader {
-
-    private TaskRepository taskRepository;
-
+public class JpaGrayCodeTaskLoader extends JpaCodingTaskLoader {
     private int min;
 
-    public static final int DEFAULT_MIN = 5;
-
+    public static final int DEFAULT_MIN = 8;
     private int max;
 
-    public static final int DEFAULT_MAX = 10;
+    public static final int DEFAULT_MAX = 8;
 
     private int frequency;
 
     public static final int DEFAULT_FREQUENCY = 10;
 
     @Autowired
-    public GrayCodeTaskLoader(TaskRepository taskRepository) {
-        this(taskRepository, DEFAULT_MIN, DEFAULT_MAX, DEFAULT_FREQUENCY);
+    public JpaGrayCodeTaskLoader(JpaTaskRepository jpaTaskRepository) {
+        this(jpaTaskRepository, null, DEFAULT_MIN, DEFAULT_MAX, DEFAULT_FREQUENCY);
     }
 
-    public GrayCodeTaskLoader(TaskRepository taskRepository, int min, int max) {
-        this(taskRepository, min, max, DEFAULT_FREQUENCY);
+    public JpaGrayCodeTaskLoader(JpaTaskRepository jpaTaskRepository, Coding coding, int min, int max) {
+        this(jpaTaskRepository, coding, min, max, DEFAULT_FREQUENCY);
     }
 
-    public GrayCodeTaskLoader(TaskRepository taskRepository, int min, int max, int frequency) {
-        this.taskRepository = taskRepository;
+    public JpaGrayCodeTaskLoader(JpaTaskRepository jpaTaskRepository, Coding coding, int min, int max, int frequency) {
+        super(jpaTaskRepository, coding);
         this.min = min;
         this.max = max;
         this.frequency = frequency;
@@ -50,12 +47,12 @@ public class GrayCodeTaskLoader implements TaskLoader {
 
     @Override
     public void loadCodingTasks() {
-        loadTasks(GrayCodeTaskLoader::grayCoding, Task.Type.CODING);
+        loadTasks(JpaGrayCodeTaskLoader::grayCoding, Task.Type.CODING);
     }
 
     @Override
     public void loadDecodingTasks() {
-        loadTasks(GrayCodeTaskLoader::grayDecoding, Task.Type.DECODING);
+        loadTasks(JpaGrayCodeTaskLoader::grayDecoding, Task.Type.DECODING);
     }
 
     private void loadTasks(IntBinaryOperator converter, Task.Type taskType) {
@@ -67,26 +64,32 @@ public class GrayCodeTaskLoader implements TaskLoader {
                 int input = i & startReflection;
                 boolean isTraining = j == frequency - 1;
                 Task task = getTask(converter, input, length, isTraining, taskType);
-                taskRepository.save(task);
+                jpaTaskRepository.save(task);
                 log.info("save task {}", task);
             }
         }
     }
 
     private Task getTask(IntBinaryOperator converter, int input, int length, boolean isTraining, Task.Type taskType) {
+        boolean isDecoding = taskType == Task.Type.DECODING;
         ElementData inputElementData = new ElementData(ElementData.ANY_SEQUENCE);
         int image = converter.applyAsInt(input, length);
         ElementData imageElementData = new ElementData(inputToString(image, length));
         Element element = new Element(null, inputElementData, imageElementData);
-        String description = getDescriptionTask(input, length);
-        return new Task(description, isTraining, taskType)
+        String description = getDescriptionTask(input, length, isDecoding);
+        Task task = new Task(description, isTraining, taskType)
                 .addElement(element);
+        task.setCoding(coding);
+        return task;
     }
 
-    public static final String DEFAULT_PREAMBLE = "Закодуйте повідомлення нижче кодом Грея:";
+    public static final String PREAMBLE_FOR_CODING = "Закодуйте число %s₂ кодом Грея";
 
-    private String getDescriptionTask(int input, int length) {
-        return DEFAULT_PREAMBLE + "\n" + inputToString(input, length);
+    public static final String PREAMBLE_FOR_DECODING = "Розкодуйте число %s₂, яке закодоване кодом Грея";
+
+    private String getDescriptionTask(int input, int length, boolean isDecoding) {
+        return (isDecoding ? PREAMBLE_FOR_DECODING : PREAMBLE_FOR_CODING)
+                .formatted(inputToString(input, length));
     }
 
     private String inputToString(int input, int length) {

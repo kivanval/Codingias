@@ -41,7 +41,7 @@ public class Coding implements Serializable {
     )
     protected Category category;
 
-    @OneToMany(mappedBy = "coding", orphanRemoval = true)
+    @OneToMany(mappedBy = "coding")
     @ToString.Exclude
     @Access(AccessType.FIELD)
     private Set<Task> tasks = new HashSet<>();

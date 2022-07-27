@@ -34,10 +34,10 @@ public class Task implements Serializable {
     protected boolean isTraining;
 
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.PERSIST)
     @ToString.Exclude
     @Access(AccessType.FIELD)
-    protected transient Set<Element> elements = new HashSet<>();
+    private Set<Element> elements = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     protected Type type;

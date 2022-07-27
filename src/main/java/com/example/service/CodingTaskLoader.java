@@ -1,6 +1,6 @@
 package com.example.service;
 
-public interface TaskLoader {
+public interface CodingTaskLoader {
 
     default void loadAll() {
         loadCodingTasks();
