@@ -1,6 +1,7 @@
 package com.example.web;
 
 import com.example.data.UserRepository;
+import com.example.security.Role;
 import com.example.security.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class RegistrationController {
         if (repository.findByEmail(email).isPresent())
             throw new UserAlreadyExistException(email);
         else {
-            //newUser.se
+            //newUser.setRole(new Role());
+            //newUser.setPermissions();
             return repository.save(newUser);
         }
     }

@@ -1,5 +1,6 @@
-package com.example.web;
+package com.example;
 
+import com.example.web.UserAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
