@@ -15,6 +15,7 @@ import java.util.List;
 public class RegistrationController {
 
     private final UserRepository repository;
+    //TODO хуйня, свапнути на норм хеш функцію
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -26,13 +27,33 @@ public class RegistrationController {
     @PostMapping("/register/guest")
     User registerGuest(@Valid @RequestBody User newUser) {
         String email = newUser.getEmail();
-        if (repository.findByEmail(email).isPresent())
+        if (repository.findByEmail(passwordEncoder.encode(email)).isPresent())
             throw new UserAlreadyExistException(email);
         else {
+            //TODO Використати допилені ролі
             newUser.setEmail(passwordEncoder.encode(email));
             //newUser.setRole(new Role());
             //newUser.setPermissions();
             return repository.save(newUser);
         }
+    }
+
+    @PostMapping("/register/group")
+    List<User> registerGroup(@Valid @RequestBody List<User> newStudents) {
+        for (User newStudent : newStudents) {
+            String email = newStudent.getEmail();
+            if (repository.findByEmail(email).isPresent())
+                /*TODO напевно краще одразу всіх перевірити, а потім кидати вийняток одразу лістом або повертати ліст не параметризований і тоді там або юзери або пошти
+                залежно від http коду
+            */
+                throw new UserAlreadyExistException(email);
+            else {
+                //TODO Використати допилені ролі
+                newStudent.setEmail(passwordEncoder.encode(email));
+                //newUser.setRole(new Role());
+                //newUser.setPermissions();
+            }
+        }
+        return repository.saveAll(newStudents);
     }
 }
