@@ -17,29 +17,23 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "PERMISSIONS")
-public class Permission implements GrantedAuthority {
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     protected String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "PERMISSIONS_roles")
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private Set<Role> roles = new LinkedHashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     public Permission(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String getAuthority() {
-        return name;
     }
 
     @Override
