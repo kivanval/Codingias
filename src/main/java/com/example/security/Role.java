@@ -23,13 +23,17 @@ public class Role  {
 
     protected String name;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "role")
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "ROLES_PERMISSIONS",
+                joinColumns =  @JoinColumn(name = "permission_id"),
+                inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ToString.Exclude
     private Set<Permission> permissions = new HashSet<>();
+
 
     public Role(String name) {
         this.name = name;

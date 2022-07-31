@@ -7,6 +7,8 @@ import com.example.security.repo.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -21,9 +23,12 @@ public class UserService {
 
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(roleRepository.findRoleByName("GUEST").orElseThrow(RuntimeException::new));
-        System.out.println("ROLE HAS + " + roleRepository.findRoleByName("GUEST").orElseThrow(RuntimeException::new).getPermissions());
+        user.setRole(roleRepository.findRoleByName("ROLE_GUEST").orElseThrow(RuntimeException::new));
         userRepository.save(user);
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email).orElseThrow(RuntimeException::new);
     }
 
 
