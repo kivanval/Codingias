@@ -20,26 +20,26 @@ import java.util.Set;
 public class Permission implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
-    protected String authorityName;
+    protected String name;
 
-    @ManyToMany
-    @JoinTable(name = "USER_PERMISSIONS")
-    @ToString.Exclude
-    private Set<User> users = new HashSet<>();
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public Permission(String authorityName) {
-        this.authorityName = authorityName;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "PERMISSIONS_roles")
+    @ToString.Exclude
+    private Set<Role> roles = new LinkedHashSet<>();
+
+    public Permission(String name) {
+        this.name = name;
     }
 
     @Override
     public String getAuthority() {
-        return authorityName;
+        return name;
     }
 
     @Override
