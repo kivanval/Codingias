@@ -19,20 +19,25 @@ import java.util.Set;
 public class Role  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
     protected String name;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "role")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<Permission> permissions = new HashSet<>();
 
     public Role(String name) {
         this.name = name;
+    }
+
+    public void setPermissionsCus(Set<Permission> permissions) {
+        this.permissions.clear();
+        this.permissions.addAll(permissions);
     }
 
     @Override
