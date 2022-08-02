@@ -1,6 +1,6 @@
-package com.example.security.repo;
+package com.example.repository;
 
-import com.example.security.User;
+import com.example.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
