@@ -1,12 +1,10 @@
-package com.example.security;
+package com.example.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,7 +26,7 @@ public class Permission {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
 

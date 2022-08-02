@@ -1,11 +1,13 @@
-package com.example.security;
+package com.example.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,20 +29,28 @@ public class Role  {
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ROLES_PERMISSIONS",
                 joinColumns =  @JoinColumn(name = "permission_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ToString.Exclude
-    private Set<Permission> permissions = new HashSet<>();
+    protected Set<Permission> permissions = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "PARENT_ROLES")
+    @ToString.Exclude
+    private Set<Role> parentRoles = new HashSet<>();
 
     public Role(String name) {
         this.name = name;
     }
 
-    public void setPermissionsCus(Set<Permission> permissions) {
+    public void setPermissions(Set<Permission> permissions) {
         this.permissions.clear();
+        this.permissions.addAll(permissions);
+    }
+
+    public void addPermissions(Set<Permission> permissions) {
         this.permissions.addAll(permissions);
     }
 
