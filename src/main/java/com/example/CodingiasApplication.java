@@ -9,4 +9,5 @@ public class CodingiasApplication {
 		SpringApplication.run(CodingiasApplication.class, args);
 	}
 
+
 }
