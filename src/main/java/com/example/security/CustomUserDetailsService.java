@@ -1,7 +1,7 @@
 package com.example.security;
 
 import com.example.model.User;
-import com.example.repository.UserRepository;
+import com.example.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
