@@ -3,7 +3,7 @@ package com.example.security;
 import com.example.model.Permission;
 import com.example.model.Role;
 import com.example.model.User;
-import com.example.repository.RoleRepository;
+import com.example.data.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

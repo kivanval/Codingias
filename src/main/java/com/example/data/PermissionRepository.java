@@ -1,4 +1,4 @@
-package com.example.repository;
+package com.example.data;
 
 import com.example.model.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
