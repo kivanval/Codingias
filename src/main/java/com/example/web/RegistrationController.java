@@ -1,7 +1,7 @@
 package com.example.web;
 
 import com.example.data.UserRepository;
-import com.example.security.User;
+import com.example.model.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +27,7 @@ public class RegistrationController {
     @PostMapping("/register/guest")
     User registerGuest(@Valid @RequestBody User newUser) {
         String email = newUser.getEmail();
-        if (repository.findByEmail(passwordEncoder.encode(email)).isPresent())
+        if (repository.findUserByEmail(passwordEncoder.encode(email)).isPresent())
             throw new UserAlreadyExistException(email);
         else {
             //TODO Використати допилені ролі
@@ -42,7 +42,7 @@ public class RegistrationController {
     List<User> registerGroup(@Valid @RequestBody List<User> newStudents) {
         for (User newStudent : newStudents) {
             String email = newStudent.getEmail();
-            if (repository.findByEmail(email).isPresent())
+            if (repository.findUserByEmail(email).isPresent())
                 /*TODO напевно краще одразу всіх перевірити, а потім кидати вийняток одразу лістом або повертати ліст не параметризований і тоді там або юзери або пошти
                 залежно від http коду
             */

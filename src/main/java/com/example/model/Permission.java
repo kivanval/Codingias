@@ -1,12 +1,10 @@
-package com.example.security;
+package com.example.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,29 +15,23 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "PERMISSIONS")
-public class Permission implements GrantedAuthority {
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
-    protected String authorityName;
-
-    @ManyToMany
-    @JoinTable(name = "USER_PERMISSIONS")
-    @ToString.Exclude
-    private Set<User> users = new HashSet<>();
+    protected String name;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public Permission(String authorityName) {
-        this.authorityName = authorityName;
-    }
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private Set<Role> roles = new HashSet<>();
 
-    @Override
-    public String getAuthority() {
-        return authorityName;
+    public Permission(String name) {
+        this.name = name;
     }
 
     @Override
