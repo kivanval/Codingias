@@ -2,9 +2,9 @@ package com.example.web;
 
 import com.example.data.UserRepository;
 import com.example.model.User;
+import com.example.service.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,22 +16,22 @@ public class RegistrationController {
 
     private final UserRepository repository;
     //TODO хуйня, свапнути на норм хеш функцію
-    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    public RegistrationController(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public RegistrationController(UserRepository repository, EmailService emailService) {
         this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register/guest")
     User registerGuest(@Valid @RequestBody User newUser) {
         String email = newUser.getEmail();
-        if (repository.findUserByEmail(passwordEncoder.encode(email)).isPresent())
+        if (repository.findUserByEmail(emailService.hashEmail(email)).isPresent())
             throw new UserAlreadyExistException(email);
         else {
             //TODO Використати допилені ролі
-            newUser.setEmail(passwordEncoder.encode(email));
+            newUser.setEmail(emailService.hashEmail(email));
             //newUser.setRole(new Role());
             //newUser.setPermissions();
             return repository.save(newUser);
@@ -49,7 +49,7 @@ public class RegistrationController {
                 throw new UserAlreadyExistException(email);
             else {
                 //TODO Використати допилені ролі
-                newStudent.setEmail(passwordEncoder.encode(email));
+                newStudent.setEmail(emailService.hashEmail(email));
                 //newUser.setRole(new Role());
                 //newUser.setPermissions();
             }

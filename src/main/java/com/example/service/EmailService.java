@@ -1,8 +1,17 @@
 package com.example.service;
 
+import com.google.common.hash.Hashing;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class EmailService {
-    //TODO туть можна і хеш функцію якусь інжектнути і одразу розсилку в майбутньому
+
+    public String hashEmail(String email) {
+        return Hashing.sha256()
+                .hashString(email, StandardCharsets.UTF_8)
+                .toString();
+    }
+
 }
