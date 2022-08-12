@@ -34,10 +34,9 @@ public class RegistrationController {
     @PostMapping("/register/guest")
     ResponseEntity<User> registerGuest(@Valid @RequestBody User newUser) {
         String email = newUser.getEmail();
-        if (userRepository.findUserByEmail(emailService.hashEmail(email)).isPresent())
+        if (userRepository.findUserByEmail(email).isPresent())
             return new ResponseEntity<>(newUser, HttpStatus.CONFLICT);
         else {
-            newUser.setEmail(emailService.hashEmail(email));
             newUser.setRole(roleService.findByName("ROLE_GUEST"));
             return new ResponseEntity<>(userRepository.save(newUser), HttpStatus.OK);
         }
@@ -51,7 +50,6 @@ public class RegistrationController {
             if (userRepository.findUserByEmail(email).isPresent())
                 alreadyExistUsers.add(newStudent);
             else {
-                newStudent.setEmail(emailService.hashEmail(email));
                 newStudent.setRole(roleService.findByName("ROLE_STUDENT"));
             }
         }
