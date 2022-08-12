@@ -38,6 +38,7 @@ public class Role  {
     @ToString.Exclude
     protected Set<Permission> permissions = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "PARENT_ROLES")
     @ToString.Exclude

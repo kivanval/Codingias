@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -22,10 +23,12 @@ public class Permission {
 
     protected String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
