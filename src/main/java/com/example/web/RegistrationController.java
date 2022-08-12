@@ -3,43 +3,49 @@ package com.example.web;
 import com.example.data.UserRepository;
 import com.example.model.User;
 import com.example.service.EmailService;
+import com.example.service.RoleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class RegistrationController {
 
-    private final UserRepository repository;
-    //TODO хуйня, свапнути на норм хеш функцію
+    private final UserRepository userRepository;
+
     private final EmailService emailService;
 
+    private final RoleService roleService;
+
     @Autowired
-    public RegistrationController(UserRepository repository, EmailService emailService) {
-        this.repository = repository;
+    public RegistrationController(UserRepository userRepository, EmailService emailService, RoleService roleService) {
+        this.userRepository = userRepository;
         this.emailService = emailService;
+        this.roleService = roleService;
     }
 
     @PostMapping("/register/guest")
-    User registerGuest(@Valid @RequestBody User newUser) {
+    ResponseEntity<User> registerGuest(@Valid @RequestBody User newUser) {
         String email = newUser.getEmail();
-        if (repository.findByEmail(passwordEncoder.encode(email)).isPresent())
-            throw new UserAlreadyExistException(email);
+        if (userRepository.findByEmail(emailService.hashEmail(email)).isPresent())
+            return new ResponseEntity<>(newUser, HttpStatus.CONFLICT);
         else {
-            //TODO Використати допилені ролі
             newUser.setEmail(emailService.hashEmail(email));
-            //newUser.setRole(new Role());
-            //newUser.setPermissions();
-            return repository.save(newUser);
+            newUser.setRole(roleService.findByName("ROLE_GUEST"));
+            return new ResponseEntity<>(userRepository.save(newUser), HttpStatus.OK);
         }
     }
 
     @PostMapping("/register/group")
-    List<User> registerGroup(@Valid @RequestBody List<User> newStudents) {
+    ResponseEntity<List<User>> registerGroup(@Valid @RequestBody List<User> newStudents) {
+        List<User> alreadyExistUsers = new ArrayList<>();
         for (User newStudent : newStudents) {
             String email = newStudent.getEmail();
             if (repository.findByEmail(email).isPresent())
@@ -48,12 +54,12 @@ public class RegistrationController {
             */
                 throw new UserAlreadyExistException(email);
             else {
-                //TODO Використати допилені ролі
                 newStudent.setEmail(emailService.hashEmail(email));
-                //newUser.setRole(new Role());
-                //newUser.setPermissions();
+                newStudent.setRole(roleService.findByName("ROLE_STUDENT"));
             }
         }
-        return repository.saveAll(newStudents);
-    }
+        if (!alreadyExistUsers.isEmpty())
+            return new ResponseEntity<>(alreadyExistUsers, HttpStatus.CONFLICT);
+        return ResponseEntity.ok(userRepository.saveAll(newStudents));
+    }}
 }

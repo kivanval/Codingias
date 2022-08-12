@@ -15,6 +15,6 @@ public class RoleService {
     }
 
     public Role findByName(String roleName) {
-        return roleRepository.findByName(roleName).orElseThrow();
+        return roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("For test"));
     }
 }

@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(UserAlreadyExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    String userAlreadyExistHandler(UserAlreadyExistException e){
-        return e.getMessage();
+    void userAlreadyExistHandler(UserAlreadyExistException e){
+
     }
 }
