@@ -1,5 +1,7 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ public class User {
     protected String firstName;
     protected String lastName;
     protected String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected String password;
 
     @ManyToOne(fetch = FetchType.EAGER)

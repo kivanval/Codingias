@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class Role  {
 
     protected String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
