@@ -9,5 +9,6 @@ public class CodingiasApplication {
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(CodingiasApplication.class, args);
+        ctx.getBean(GrayCodeTaskLoader.class).loadAll();
     }
 }

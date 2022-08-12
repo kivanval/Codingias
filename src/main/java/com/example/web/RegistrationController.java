@@ -48,18 +48,16 @@ public class RegistrationController {
         List<User> alreadyExistUsers = new ArrayList<>();
         for (User newStudent : newStudents) {
             String email = newStudent.getEmail();
-            if (repository.findByEmail(email).isPresent())
+            if (userRepository.findByEmail(email).isPresent())
                 /*TODO напевно краще одразу всіх перевірити, а потім кидати вийняток одразу лістом або повертати ліст не параметризований і тоді там або юзери або пошти
                 залежно від http коду
             */
-                throw new UserAlreadyExistException(email);
+                throw new UserAlreadyExistException(newStudent);
             else {
                 newStudent.setEmail(emailService.hashEmail(email));
                 newStudent.setRole(roleService.findByName("ROLE_STUDENT"));
             }
         }
-        if (!alreadyExistUsers.isEmpty())
-            return new ResponseEntity<>(alreadyExistUsers, HttpStatus.CONFLICT);
         return ResponseEntity.ok(userRepository.saveAll(newStudents));
-    }}
+    }
 }

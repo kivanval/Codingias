@@ -70,7 +70,7 @@ public class GlobalTestController {
 
     @GetMapping("/down")
     public void down() {
-        User user = userRepository.findUserByEmail("b").orElseThrow(RuntimeException::new);
+        User user = userRepository.findByEmail("b").orElseThrow(RuntimeException::new);
         Role role = roleRepository.findByName("ROLE_GUEST").orElseThrow(RuntimeException::new);
         user.setRole(role);
         userRepository.save(user);
@@ -78,7 +78,7 @@ public class GlobalTestController {
 
     @GetMapping("/up")
     public void up() {
-        User user = userRepository.findUserByEmail("b").orElseThrow(RuntimeException::new);
+        User user = userRepository.findByEmail("b").orElseThrow(RuntimeException::new);
         Role role = roleRepository.findByName("ROLE_ADMIN").orElseThrow(RuntimeException::new);
         user.setRole(role);
         userRepository.save(user);

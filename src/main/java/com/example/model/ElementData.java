@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -15,7 +17,10 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Embeddable
-public class ElementData {
+public class ElementData implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public static final String ANY_SEQUENCE = "%";
     public static final String ANY_SYMBOL = "_";
